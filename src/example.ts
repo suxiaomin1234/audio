@@ -41,7 +41,7 @@ async function startRecord() {
             sampleRate:  16000, // 浏览器默认的输入采样率,
             numChannels: 1,
         });
-
+        // 过程时长
         recorder.onprocess = function(duration) {
             // 部分低版本浏览器不支持innerText，改用innerHTML
             oTime.innerHTML = duration.toFixed(5);

@@ -1,5 +1,5 @@
 // import * as lamejs from 'lamejs';
-
+// 声明
 declare let window: any;
 declare let Math: any;
 declare let document: any;
@@ -86,7 +86,7 @@ class Recorder {
             this.destroy();
         }
         this.context = new (window.AudioContext || window.webkitAudioContext)();
-        
+        // 创建一个AnalyserNode，可以用来获取音频时间和频率数据，以及实现数据可视化。
         this.analyser = this.context.createAnalyser();  // 录音分析节点
         this.analyser.fftSize = 2048;                   // 表示存储频域的大小
 
@@ -167,6 +167,7 @@ class Recorder {
         if (this.isrecording && !this.ispause) {
             this.ispause = true;
             // 当前不暂停的时候才可以暂停
+            console.log(this.recorder)
             this.recorder.disconnect();
         }
     }
@@ -253,18 +254,19 @@ class Recorder {
     
     // getUserMedia 版本兼容
     private initUserMedia() {
+        // navigator.mediaDevices 提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道。此流可以包含一个视频轨道（来自硬件或者虚拟视频源，比如相机、视频采集设备和屏幕共享服务等等）、一个音频轨道（同样来自硬件或虚拟音频源，比如麦克风、A/D转换器等等），也可能是其它轨道类型
         if (navigator.mediaDevices === undefined) {
             navigator.mediaDevices = {};
         }
         
         if (navigator.mediaDevices.getUserMedia === undefined) {
             navigator.mediaDevices.getUserMedia = function(constraints) {
+                // 提醒用户需要使用音频（0或者1）和（0或者1）视频输入设备，比如相机，屏幕共享，或者麦克风
                 var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
                 
                 if (!getUserMedia) {
                     return Promise.reject(new Error('浏览器不支持 getUserMedia !'));
                 }
-                
                 return new Promise(function(resolve, reject) {
                     getUserMedia.call(navigator, constraints, resolve, reject);
                 });
